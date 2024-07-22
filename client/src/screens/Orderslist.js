@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
@@ -11,21 +12,10 @@ export default function Orderslist() {
   const ordersstate = useSelector((state) => state.getUserOrdersReducer);
 
   const { orders = [], error, loading } = ordersstate;
-  const [orderPins, setOrderPins] = React.useState({});
 
   useEffect(() => {
     dispatch(getUserOrders());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (orders) {
-      const pins = {};
-      orders.forEach((order) => {
-        pins[order._id] = order.uniquePin; // Assuming uniquePin is available in the order data
-      });
-      setOrderPins(pins);
-    }
-  }, [orders]);
 
   return (
     <div>
@@ -39,15 +29,16 @@ export default function Orderslist() {
           </ul>
           <div>
             <h1>Orders List</h1>
-            {loading && (<Loading/>)}
-            {error && (<Error error='Something went wrong'/>)}
+            {loading && (<Loading />)}
+            {error && (<Error error='Something went wrong' />)}
 
             <table className='table table-striped table-bordered'>
               <thead className='thead-dark'>
                 <tr>
                   <th>Order Id</th>
-                  {/* <th>Roll Number</th> */}
+                  <th>Email</th>
                   <th>User Id</th>
+                  <th>Transaction Id</th>
                   <th>Amount</th>
                   <th>Date</th>
                   <th>Unique PIN</th>
@@ -60,9 +51,10 @@ export default function Orderslist() {
                     <td>{order._id}</td>
                     <td>{order.email}</td>
                     <td>{order.userid}</td>
+                    <td>{order.transactionId}</td>
                     <td>{order.orderAmount}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{orderPins[order._id]}</td>
+                    <td>{order.uniquePin}</td>  {/* Display unique PIN */}
                   </tr>
                 ))}
               </tbody>

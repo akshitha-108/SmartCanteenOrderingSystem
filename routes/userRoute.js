@@ -10,7 +10,6 @@ router.post("/register",async (req,res)=>{
         res.send('User Registered successfully, please Login')
     } catch(error){
         return res.status(400).json({message:error})
-
     }
 });
 
@@ -37,7 +36,6 @@ router.post('/login',async(req,res)=>{
             }
             res.send(currentUser);
         }
-        
         else
         {
         return res.status(400).json({message:"User Login Failed"});

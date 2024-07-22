@@ -1,39 +1,34 @@
+
 import axios from 'axios';
 
-export const generateUniquePin = () => {
-  return Math.floor(1000 + Math.random() * 9000);
-};
-//actual code 
 export const placeOrder = (token, subtotal) => async (dispatch, getState) => {
-    dispatch({ type: 'PLACE_ORDER_REQUEST' });
-    const currentUser = getState().loginUserReducer.currentUser;
-    const cartItems = getState().cartReducer.cartItems;
-  
-    try {
-      const response = await axios.post('/api/orders/placeorder', {
-        token,
-        subtotal,
-        currentUser,
-        cartItems,
-      });
-  
-      const uniquePin = response.data.order.uniquePin;
-  
-      dispatch({
-        type: 'PLACE_ORDER_SUCCESS',
-        payload: { uniquePin },
-      });
-      console.log(response);
-    } catch (error) {
-      dispatch({ type: 'PLACE_ORDER_FAILED' });
-      console.log(error);
-      if (error.response) {
-        console.error(error.response.data);
-      }
+  dispatch({ type: 'PLACE_ORDER_REQUEST' });
+  const currentUser = getState().loginUserReducer.currentUser;
+  const cartItems = getState().cartReducer.cartItems;
+
+  try {
+    const response = await axios.post('/api/orders/placeorder', {
+      token,
+      subtotal,
+      currentUser,
+      cartItems,
+    });
+
+    const order = response.data.order;
+
+    dispatch({
+      type: 'PLACE_ORDER_SUCCESS',
+      payload: order,
+    });
+    console.log(response);
+  } catch (error) {
+    dispatch({ type: 'PLACE_ORDER_FAILED', payload: error.message });
+    console.log(error);
+    if (error.response) {
+      console.error(error.response.data);
     }
-  };
-
-
+  }
+};
 
 export const getUserOrders = () => async (dispatch, getState) => {
   const currentUser = getState().loginUserReducer.currentUser;
@@ -46,5 +41,3 @@ export const getUserOrders = () => async (dispatch, getState) => {
     dispatch({ type: 'GET_USER_ORDERS_FAILED', payload: error });
   }
 };
-
-

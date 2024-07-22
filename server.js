@@ -21,17 +21,11 @@ const generateUniquePin = () => {
 
 // Assuming you have something like this in your backend
 app.post('/api/orders/placeorder', async (req, res) => {
-    // ... (your existing logic)
-  
     const uniquePin = generateUniquePin(); // Generate unique PIN
     const order = {
-      // ... (other order details)
       uniquePin: uniquePin,
     };
-  
-    // Save order to the database, etc.
-  
-    res.json({ success: true, order: order }); // Send uniquePin in the response
+    res.json({ success: true, order: order }); 
   });
   
 app.get("/",(req,res) =>
