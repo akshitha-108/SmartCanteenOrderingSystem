@@ -4,9 +4,7 @@ const orderSchema = mongoose.Schema({
     email : {type: String,require},
     userid : {type:String, require},
     orderItems:[],
-    
     orderAmount : {type:Number,require},
-    
     transactionId:{type:String,require},
     uniquePin: { type: Number, required: true } 
 },{
